@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChargeGrid — Billing PoC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app">
+
+  <div class="header">
+    <div class="dot" id="statusDot"></div>
+    <div class="logo">CHARGE<span>GRID</span> // BILLING v2.0</div>
+  </div>
+
+  <!-- SCREEN: IDLE -->
+  <div id="screenIdle">
+    <div class="card">
+      <div class="charger-row">
+        <div>
+          <div class="station-id">STATION ID: FIAP-01</div>
+          <div class="station-name">Carregador FIAP — Bloco K</div>
+        </div>
+        <span class="badge solar">☀ Solar ativo</span>
+      </div>
+
+      <div class="sec-label">Selecione a fonte de energia</div>
+      <div class="source-options">
+        <div class="source-btn selected-solar" id="btn-solar" onclick="selectSource('solar')">
+          <div class="src-icon">☀</div>
+          <span class="src-name">Solar</span>
+          <span class="src-rate">R$ 0,45/kWh</span>
+        </div>
+        <div class="source-btn" id="btn-grid" onclick="selectSource('grid')">
+          <div class="src-icon">⚡</div>
+          <span class="src-name">Fora do pico</span>
+          <span class="src-rate">R$ 0,75/kWh</span>
+        </div>
+        <div class="source-btn" id="btn-peak" onclick="selectSource('peak')">
+          <div class="src-icon">🔴</div>
+          <span class="src-name">Horário pico</span>
+          <span class="src-rate">R$ 1,20/kWh</span>
+        </div>
+      </div>
+
+      <div class="sec-label">Referência de tarifas (ANEEL)</div>
+      <div class="tariff-row">
+        <div><div class="tariff-label">☀ Energia Solar</div><div class="tariff-sub">Geração local — prioridade automática</div></div>
+        <div><div class="tariff-price">R$ 0,45/kWh</div><div style="text-align:right;margin-top:4px"><span class="badge eco" style="font-size:10px">Econômico</span></div></div>
+      </div>
+      <div class="tariff-row">
+        <div><div class="tariff-label">⚡ Rede — fora do pico</div><div class="tariff-sub">00h–17h e 21h–23h59</div></div>
+        <div><div class="tariff-price">R$ 0,75/kWh</div><div style="text-align:right;margin-top:4px"><span class="badge grid" style="font-size:10px">Normal</span></div></div>
+      </div>
+      <div class="tariff-row" style="margin-bottom:0">
+        <div><div class="tariff-label">⚡ Rede — horário de pico</div><div class="tariff-sub">17h–21h (bandeira vermelha)</div></div>
+        <div><div class="tariff-price">R$ 1,20/kWh</div><div style="text-align:right;margin-top:4px"><span class="badge peak" style="font-size:10px">Pico</span></div></div>
+      </div>
+    </div>
+    <button class="btn start" id="startBtn" onclick="startSession()">INICIAR SESSÃO DE RECARGA</button>
+  </div>
+
+  <!-- SCREEN: ACTIVE -->
+  <div id="screenActive" class="hidden">
+    <div class="card">
+      <div class="charger-row">
+        <div>
+          <div class="station-id">SESSÃO ATIVA — <span id="sessionId">---</span></div>
+          <div class="station-name">Carregador FIAP — Bloco K</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
+          <span class="badge" id="activeBadge">---</span>
+          <span class="badge" id="activeTariffBadge">---</span>
+        </div>
+      </div>
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-label">Consumo</div>
+          <div class="metric-val green" id="kwh">0.000</div>
+          <div class="metric-unit">kWh</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Duração</div>
+          <div class="metric-val" id="timer">00:00</div>
+          <div class="metric-unit">hh:mm</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Custo atual</div>
+          <div class="metric-val big green" id="cost">R$0,00</div>
+          <div class="metric-unit" id="rateLabel">---</div>
+        </div>
+      </div>
+      <div class="sec-label">Bateria do veículo</div>
+      <div class="prog-bar"><div class="prog-fill" id="batBar" style="width:20%"></div></div>
+      <div class="prog-labels"><span>20% inicial</span><span id="batPct">20%</span><span>100% máx</span></div>
+      <div class="tariff-row" style="margin-bottom:0">
+        <div class="tariff-label">Potência instantânea</div>
+        <div class="tariff-price">7,4 kW (AC)</div>
+      </div>
+    </div>
+    <button class="btn stop" onclick="stopSession()">ENCERRAR E GERAR RECIBO</button>
+  </div>
+
+  <!-- SCREEN: RECEIPT -->
+  <div id="screenReceipt" class="hidden">
+    <div class="card">
+      <div class="receipt-title">Recibo de recarga // ChargeGrid</div>
+      <div class="receipt-row"><span class="receipt-key">Sessão</span><span class="receipt-val" id="rSessionId">---</span></div>
+      <div class="receipt-row"><span class="receipt-key">Estação</span><span class="receipt-val">FIAP-01 / Bloco K</span></div>
+      <div class="receipt-row"><span class="receipt-key">Fonte utilizada</span><span class="receipt-val" id="rSource">---</span></div>
+      <div class="receipt-row"><span class="receipt-key">Tarifa aplicada</span><span class="receipt-val" id="rTariff">---</span></div>
+      <div class="receipt-row"><span class="receipt-key">Duração</span><span class="receipt-val" id="rTime">---</span></div>
+      <div class="receipt-row"><span class="receipt-key">Consumo</span><span class="receipt-val" id="rKwh">---</span></div>
+      <div class="receipt-row"><span class="receipt-key">CO₂ evitado (vs gasolina)</span><span class="receipt-val" id="rCo2">---</span></div>
+      <div class="receipt-total">
+        <span>Total a pagar</span>
+        <span class="receipt-total-val" id="rTotal">R$ 0,00</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="compare-title">Comparativo — mesmo consumo, fontes diferentes</div>
+      <div class="compare-grid">
+        <div class="compare-card" id="cSolar">
+          <div class="cc-label">☀ Solar</div>
+          <div class="cc-val" id="cSolarVal">---</div>
+          <div class="cc-sub">R$ 0,45/kWh</div>
+        </div>
+        <div class="compare-card" id="cGrid">
+          <div class="cc-label">⚡ Fora pico</div>
+          <div class="cc-val" id="cGridVal">---</div>
+          <div class="cc-sub">R$ 0,75/kWh</div>
+        </div>
+        <div class="compare-card" id="cPeak">
+          <div class="cc-label">🔴 Pico</div>
+          <div class="cc-val" id="cPeakVal">---</div>
+          <div class="cc-sub">R$ 1,20/kWh</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--text-muted);text-align:center">
+        ✦ Destaque = tarifa utilizada nesta sessão
+      </div>
+    </div>
+
+    <div class="summary-grid">
+      <div class="summary-card green-tint">
+        <div class="summary-label green">Economia vs pico</div>
+        <div class="summary-val green" id="rSaving">---</div>
+        <div class="summary-sub green">usando energia solar</div>
+      </div>
+      <div class="summary-card normal">
+        <div class="summary-label muted">Bateria final</div>
+        <div class="summary-val white" id="rBat">---</div>
+        <div class="summary-sub muted">% de carga</div>
+      </div>
+    </div>
+
+    <button class="btn reset" onclick="resetSession()">NOVA SESSÃO</button>
+  </div>
+
+</div>
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0d0f14; --surface: #13161e; --surface2: #1a1e28;
+  --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.14);
+  --text: #e8eaf0; --text-muted: #7a8099; --text-dim: #454a5e;
+  --green: #2ecc71; --green-bg: rgba(46,204,113,0.1); --green-border: rgba(46,204,113,0.25);
+  --blue: #3da9fc; --blue-bg: rgba(61,169,252,0.1); --blue-border: rgba(61,169,252,0.25);
+  --amber: #f5a623; --amber-bg: rgba(245,166,35,0.1); --amber-border: rgba(245,166,35,0.25);
+  --red: #e05c5c; --radius: 10px; --radius-sm: 6px;
+}
+
+body {
+  background: var(--bg); color: var(--text);
+  font-family: 'Rajdhani', sans-serif;
+  min-height: 100vh; display: flex;
+  align-items: flex-start; justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.app { width: 100%; max-width: 480px; }
+
+.header { display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--amber); }
+.dot.active { background: var(--green); animation: blink 1.2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+.logo { font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--text-muted); letter-spacing: 2px; }
+.logo span { color: var(--green); }
+
+.card { background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius); padding: 1.25rem 1.25rem 1rem; margin-bottom: 1rem; }
+
+.charger-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; }
+.station-id { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+.station-name { font-size: 17px; font-weight: 600; color: var(--text); }
+
+.badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
+.badge.solar { background: var(--green-bg); color: var(--green); border: 0.5px solid var(--green-border); }
+.badge.grid  { background: var(--blue-bg);  color: var(--blue);  border: 0.5px solid var(--blue-border); }
+.badge.peak  { background: var(--amber-bg); color: var(--amber); border: 0.5px solid var(--amber-border); }
+.badge.eco   { background: var(--green-bg); color: var(--green); border: 0.5px solid var(--green-border); }
+
+.source-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1.25rem; }
+.source-btn {
+  background: var(--surface2); border: 0.5px solid var(--border);
+  border-radius: var(--radius-sm); padding: 12px 8px;
+  cursor: pointer; text-align: center;
+  transition: border-color 0.2s, background 0.2s;
+}
+.source-btn:hover { border-color: var(--border2); }
+.source-btn.selected-solar { border-color: var(--green); background: var(--green-bg); }
+.source-btn.selected-grid  { border-color: var(--blue);  background: var(--blue-bg); }
+.source-btn.selected-peak  { border-color: var(--amber); background: var(--amber-bg); }
+.source-btn .src-icon { font-size: 20px; margin-bottom: 4px; }
+.source-btn .src-name { font-size: 12px; font-weight: 600; color: var(--text); display: block; }
+.source-btn .src-rate { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text-muted); display: block; margin-top: 2px; }
+
+.sec-label { font-size: 10px; color: var(--text-dim); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+
+.tariff-row { background: var(--surface2); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.tariff-label { font-size: 13px; color: var(--text-muted); }
+.tariff-sub   { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+.tariff-price { font-family: 'Share Tech Mono', monospace; font-size: 13px; color: var(--text); text-align: right; }
+
+.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1.25rem; }
+.metric { background: var(--surface2); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px 10px; }
+.metric-label { font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.metric-val { font-family: 'Share Tech Mono', monospace; font-size: 20px; color: var(--text); }
+.metric-val.green { color: var(--green); }
+.metric-val.big   { font-size: 22px; }
+.metric-unit { font-size: 10px; color: var(--text-dim); margin-top: 3px; }
+
+.prog-bar { background: var(--surface2); border-radius: 4px; height: 5px; overflow: hidden; margin-bottom: 4px; }
+.prog-fill { height: 100%; border-radius: 4px; background: var(--green); transition: width 0.5s linear; }
+.prog-labels { display: flex; justify-content: space-between; font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--text-muted); margin-bottom: 1.25rem; }
+
+.btn { width: 100%; padding: 14px; border-radius: var(--radius-sm); font-family: 'Rajdhani', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 1.5px; cursor: pointer; border: none; transition: opacity 0.15s, transform 0.1s; margin-bottom: 8px; }
+.btn:active   { transform: scale(0.98); }
+.btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn.start { background: var(--green); color: #0a1a10; }
+.btn.stop  { background: var(--red);   color: #fff; }
+.btn.reset { background: var(--surface2); color: var(--text); border: 0.5px solid var(--border2); }
+
+.receipt-title { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1rem; }
+.receipt-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 0.5px solid var(--border); font-size: 14px; }
+.receipt-row:last-of-type { border-bottom: none; }
+.receipt-key { color: var(--text-muted); }
+.receipt-val { font-family: 'Share Tech Mono', monospace; color: var(--text); text-align: right; }
+.receipt-total { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 0.5px solid var(--border2); font-size: 18px; font-weight: 600; }
+.receipt-total-val { font-family: 'Share Tech Mono', monospace; color: var(--green); }
+
+.compare-title { font-family: 'Share Tech Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+.compare-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1rem; }
+.compare-card { background: var(--surface2); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px 8px; text-align: center; }
+.compare-card.winner { border-color: var(--green); background: var(--green-bg); }
+.compare-card .cc-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.compare-card .cc-val { font-family: 'Share Tech Mono', monospace; font-size: 16px; color: var(--text); }
+.compare-card.winner .cc-val { color: var(--green); }
+.compare-card .cc-sub { font-size: 10px; color: var(--text-dim); margin-top: 4px; }
+.compare-card.winner .cc-sub { color: var(--green); }
+
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1rem; }
+.summary-card { padding: 12px; border-radius: var(--radius-sm); border: 0.5px solid var(--border); }
+.summary-card.green-tint { background: var(--green-bg); border-color: var(--green-border); }
+.summary-card.normal     { background: var(--surface); }
+.summary-label { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+.summary-label.green { color: var(--green); }
+.summary-label.muted { color: var(--text-muted); }
+.summary-val { font-family: 'Share Tech Mono', monospace; font-size: 20px; }
+.summary-val.green { color: var(--green); }
+.summary-val.white { color: var(--text); }
+.summary-sub { font-size: 11px; margin-top: 2px; }
+.summary-sub.green { color: var(--green); }
+.summary-sub.muted { color: var(--text-dim); }
+
+.hidden { display: none !important; }
