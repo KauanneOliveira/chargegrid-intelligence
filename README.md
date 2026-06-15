@@ -12,6 +12,20 @@ Estações de recarga para veículos elétricos (EVs) enfrentam desafios que vã
 - Desperdício de energia solar gerada localmente
 - Experiência de uso ruim para o motorista
 
+## Identificação Acadêmica
+**Curso**: Ciências da Computação - 1º Ano <br>
+**Turma**: 1CCPI <br>
+**Integrantes**:
+
+| Nome | RM |
+|------|----|
+| Pedro Ferreras | RM 568713 |
+| Pedro Santos | RM 571017 |
+| Victor Binot | RM 571499 |
+| Gustavo Kunitaki | RM 571400 |
+| Kauanne Oliveira | RM 574191 |
+| Nayhely Estela | RM 571416 |
+
 ## A Solução
 
 O projeto propõe um ecossistema composto por cinco módulos:
