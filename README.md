@@ -2,16 +2,6 @@
 
 Prova de conceito de um sistema inteligente de gerenciamento e tarifação de recargas para veículos elétricos, desenvolvido em parceria com a **GoodWe** usando o carregador da FIAP como piloto.
 
-## O Problema
-
-Estações de recarga para veículos elétricos (EVs) enfrentam desafios que vão além da infraestrutura física:
-
-- Sobrecargas na rede elétrica em horários de pico
-- Falta de padronização entre equipamentos de diferentes fabricantes
-- Ausência de sistemas de cobrança integrados e transparentes
-- Desperdício de energia solar gerada localmente
-- Experiência de uso ruim para o motorista
-
 ## Identificação Acadêmica
 **Curso**: Ciências da Computação - 1º Ano <br>
 **Turma**: 1CCPI <br>
@@ -25,6 +15,16 @@ Estações de recarga para veículos elétricos (EVs) enfrentam desafios que vã
 | Gustavo Kunitaki | RM 571400 |
 | Kauanne Oliveira | RM 574191 |
 | Nayhely Estela | RM 571416 |
+
+## O Problema
+
+Estações de recarga para veículos elétricos (EVs) enfrentam desafios que vão além da infraestrutura física:
+
+- Sobrecargas na rede elétrica em horários de pico
+- Falta de padronização entre equipamentos de diferentes fabricantes
+- Ausência de sistemas de cobrança integrados e transparentes
+- Desperdício de energia solar gerada localmente
+- Experiência de uso ruim para o motorista
 
 ## A Solução
 
